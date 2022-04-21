@@ -7,9 +7,8 @@
                   <h5 class="card-title">Create Product</h5>
             </div>   
             <div class="card-body">
-                <form action="{{ url('update_product/'.$product->id) }}" method="PUT" enctype="multipart/form-data">
+                <form action="{{ url('update_product/'.$product->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
                     @if($errors->any())
                         <div class="alert alert-danger">
                             <ul>

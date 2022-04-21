@@ -68,7 +68,6 @@ class ProductController extends Controller
             'slug'=>'required|max:50|min:1',
             'price'=>'required|max:30|min:1',
             'description'=>'required|max:500|min:1',
-            'image'=>'required|image|mimes:jpg,png,jpeg'
     ]);
 
         if($request->hasFile('image')){

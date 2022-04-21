@@ -82,7 +82,6 @@ class OutletController extends Controller
             'longitude'=>'required|max:100|min:1',
             'opening_time'=>'required',
             'closing_time'=>'required',
-            'image'=>'required|image|mimes:jpg,png,jpeg'
     ]);
 
         if($request->hasFile('image')){

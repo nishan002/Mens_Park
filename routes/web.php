@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/add_product', [App\Http\Controllers\Admin\ProductController::class, 'add_product'])->name('add_product');
     Route::post('/store_product', [App\Http\Controllers\Admin\ProductController::class, 'store_product'])->name('store_product');
     Route::get('/edit_product/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('edit');
-    Route::put('/update_product/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('update');  
+    Route::post('/update_product/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('update');  
     Route::get('/delete_product/{id}', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('destroy');
     Route::get('/product_search', [App\Http\Controllers\Admin\ProductController::class, 'product_search'])->name('product_search');  
 
@@ -56,7 +56,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/add_outlet', [App\Http\Controllers\Admin\OutletController::class, 'add_outlet'])->name('add_outlet');
     Route::post('/store_outlet', [App\Http\Controllers\Admin\OutletController::class, 'store_outlet'])->name('store_outlet');
     Route::get('/edit_outlet/{id}', [App\Http\Controllers\Admin\OutletController::class, 'edit'])->name('edit');
-    Route::put('/update_outlet/{id}', [App\Http\Controllers\Admin\OutletController::class, 'update'])->name('update');  
+    Route::post('/update_outlet/{id}', [App\Http\Controllers\Admin\OutletController::class, 'update'])->name('update');  
     Route::get('/delete_outlet/{id}', [App\Http\Controllers\Admin\OutletController::class, 'destroy'])->name('destroy');
     Route::get('/outlet_search', [App\Http\Controllers\Admin\OutletController::class, 'outlet_search'])->name('outlet_search');  
 
