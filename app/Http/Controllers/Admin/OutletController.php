@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Outlet;
+use Illuminate\Support\Facades\File;
 
 class OutletController extends Controller
 {
@@ -110,6 +111,11 @@ class OutletController extends Controller
     // Delete outlet
     public function destroy($id){
         $outlet = Outlet::find($id);
+        $directory = 'assets/uploads/outlets/'.$outlet->image;
+
+        if(File::exists($directory)){
+            File::delete($directory);
+        }
         $outlet->delete();
         return redirect('outlets')->with('status', 'Outlet Deleted Successfully');
     }

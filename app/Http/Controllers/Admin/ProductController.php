@@ -92,6 +92,11 @@ class ProductController extends Controller
     // Delete product
     public function destroy($id){
         $product = Product::find($id);
+        $directory = 'assets/uploads/outlets/'.$product->image;
+
+        if(File::exists($directory)){
+            File::delete($directory);
+        }
         $product->delete();
         return redirect('products')->with('status', 'Product Deleted Successfully');
     }
