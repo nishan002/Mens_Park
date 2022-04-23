@@ -26,8 +26,8 @@ class HomePageController extends Controller
     }
 
     public function outlet_map(){
-        $outlets = Outlet::all();
-        return view('frontend/outlet_map', compact('outlets'));
+        $location = Outlet::all();
+        return view('frontend/outlet_map', compact('location'));
     }
 
     // About the Mens Park show page

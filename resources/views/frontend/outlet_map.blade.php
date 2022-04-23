@@ -18,7 +18,15 @@
                   </div>
             </div>   
             <div class="card-body">
-            <div class="mapouter"><div class="gmap_canvas"><iframe class="embed-responsive-item" width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=chattogram&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.embedgooglemap.net/blog/divi-discount-code-elegant-themes-coupon/"></a><br><style>.mapouter{position:relative;text-align:right;height:500px;width:600px;}</style><a href="https://www.embedgooglemap.net">insert google map into wordpress</a><style>.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:600px;}</style></div></div>
-            </div>   
+                  <div id="map"></div>
+      </div>
+            
       </div> 
+@endsection
+
+@section('script')
+
+<!-- Google map API key and Map ID -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQMvgrlHWvzFihF5pXTRZIahjDXFhvIes&map_ids=2b85e1fd7d101f0&callback=initMap"></script>
+
 @endsection

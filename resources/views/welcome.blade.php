@@ -19,7 +19,7 @@
     <link href="{{ asset('admin/css/dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
-
+    
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -69,6 +69,7 @@
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+    @yield('script')
     
 </body>
 </html>

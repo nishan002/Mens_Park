@@ -125,4 +125,5 @@ class OutletController extends Controller
         $outlets = Outlet::where('name', 'LIKE', '%'.$search_text.'%')->get();
         return view('admin/outlet/outlet_search', compact('outlets'));
     }
+
 }
