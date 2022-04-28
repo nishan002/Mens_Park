@@ -51,21 +51,3 @@
     }
   })
 })()
-
-// Script for google map 
-function initMap() {
-  const myLatLng = { lat: 23.81561738462228, lng: 90.42583743878245 };
-  const map = new google.maps.Map(document.getElementById("map"), {
-  zoom: 14,
-  center: myLatLng,
-  mapId: "2b85e1fd7d101f0",
-  });
-
-  new google.maps.Marker({
-  position: { lat: 23.81561738462228, lng: 90.42583743878245 },
-  map,
-  title: "Hello World!",
-  });
-}
-
-window.initMap = initMap;
