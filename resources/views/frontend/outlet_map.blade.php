@@ -30,9 +30,8 @@
 
 
 <script type="text/javascript">
-     @foreach($location as $item)
+     
       function initMap() {
-            
             const myLatLng = { lat: 22.447054504516245, lng: 91.78526147055364 };
             const map = new google.maps.Map(document.getElementById("map"), {
             zoom: 8,
@@ -40,19 +39,19 @@
             mapId: "2b85e1fd7d101f0",
             });
 
-            
+            @foreach($location as $item)
             new google.maps.Marker({
                   
-                        position: { lat: {{ $item->latitude }}, lng: {{ $item->longitude }} },
-                        map,
-                        title: "{{ $item->name }}",
-                  
+                  position: { lat: {{ $item->latitude }}, lng: {{ $item->longitude }} },
+                  map,
+                  title: "{{ $item->name }}",
+      
             });     
-                  
+            @endforeach 
       }
       
       window.initMap = initMap;
-      @endforeach   
+         
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQMvgrlHWvzFihF5pXTRZIahjDXFhvIes&map_ids=2b85e1fd7d101f0&callback=initMap"></script>
 @endsection
