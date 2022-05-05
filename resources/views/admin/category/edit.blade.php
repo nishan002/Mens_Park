@@ -5,11 +5,10 @@
     <div class="card">
             <div class="card-header">
                   <h5 class="card-title">Edit Category</h5>
-            </div>   
+            </div>
             <div class="card-body">
-                <form action="{{ url('update_category/'.$category->id) }}" method="PUT">
+                <form action="{{ url('update_category/'.$category->id) }}" method="post">
                     @csrf
-                    @method('PUT')
                     @if($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -48,7 +47,7 @@
 
                     </div>
                 </form>
-            </div>   
+            </div>
     </div>
-         
+
 @endsection

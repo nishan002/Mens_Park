@@ -43,12 +43,12 @@
 <div class="container-fluid">
   <div class="row">
     @include('layouts.include.sidebar')
-    
+
       @yield('content')
   </div>
 </div>
 
-    
+
 
 
 

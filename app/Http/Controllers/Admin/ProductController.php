@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -28,9 +29,10 @@ class ProductController extends Controller
         $request->validate([
             'category_id'=>'required|max:20|min:1',
             'name'=>'required|max:50|min:1',
-            'slug'=>'required|max:50|min:1',
+            'slug'=>'required|unique:products,slug|max:50|min:1',
             'price'=>'required|max:30|min:1',
-            'description'=>'required|max:500|min:1'
+            'description'=>'required|max:500|min:1',
+            'image'=>'required|image|max:5120|mimes:jpg,png,jpeg',
     ]);
 
         if($request->hasFile('image')){
@@ -40,13 +42,13 @@ class ProductController extends Controller
             $file->move('assets/uploads/products/',$file_name);
             $product->image = $file_name;
         }
-        
+
         $product->name = $request->input('name');
         $product->slug = $request->input('slug');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->category_id = $request->input('category_id');
-        
+
         $product->save();
         return redirect('products')->with('status', 'Product Added Successfully');
     }
@@ -58,16 +60,18 @@ class ProductController extends Controller
         return view('admin/product/edit', compact('product', 'categories'));
     }
 
-    // Updating the data of the products table 
+    // Updating the data of the products table
     public function update(Request $request, $id){
         $product = Product::find($id);
-        
+
         $request->validate([
             'category_id'=>'required|max:20|min:1',
             'name'=>'required|max:50|min:1',
-            'slug'=>'required|max:50|min:1',
+            'slug'=>'required|unique:products,slug|max:50|min:1',
             'price'=>'required|max:30|min:1',
             'description'=>'required|max:500|min:1',
+            'image'=>'image|mimes:jpg,png,jpeg',
+            'image' => 'max:5120',
     ]);
 
         if($request->hasFile('image')){
@@ -77,13 +81,13 @@ class ProductController extends Controller
             $file->move('assets/uploads/products/',$file_name);
             $product->image = $file_name;
         }
-        
+
         $product->name = $request->input('name');
         $product->slug = $request->input('slug');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->category_id = $request->input('category_id');
-        
+
         $product->update();
         return redirect('products')->with('status', 'Product Updated Successfully');
     }

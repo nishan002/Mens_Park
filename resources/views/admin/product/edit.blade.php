@@ -5,7 +5,7 @@
     <div class="card">
             <div class="card-header">
                   <h5 class="card-title">Create Product</h5>
-            </div>   
+            </div>
             <div class="card-body">
                 <form action="{{ url('update_product/'.$product->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
@@ -45,9 +45,12 @@
                             <label class="control-label font-14 m-b-5">Select Category</label>
                             <div>
                                 <select class="custom-select font-14 m-b-5" data-style="btn-default btn-outline" name="category_id">
-                                    <option  data-tokens="Category">Select Category </option>
                                     @foreach($categories as $category)
-                                        <option class="form-control" value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option value="{{$category->id}}"
+                                        @if($product->category->id == $category->id)
+                                            selected
+                                        @endif
+                                    >{{$category->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -64,7 +67,7 @@
 
                     </div>
                 </form>
-            </div>   
+            </div>
     </div>
-         
+
 @endsection

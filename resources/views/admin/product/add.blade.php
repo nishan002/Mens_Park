@@ -5,9 +5,9 @@
     <div class="card">
             <div class="card-header">
                   <h5 class="card-title">Create Product</h5>
-            </div>   
+            </div>
             <div class="card-body">
-                <form action="{{ url('store_product') }}" method="POST" enctype="multipart/form-data">
+                <form id="main_form" action="{{ url('store_product') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @if($errors->any())
                         <div class="alert alert-danger">
@@ -24,21 +24,25 @@
                         <div class="col-md-6 mb-3">
                             <label for="name">Name</label>
                             <input id="name" type="text" class="form-control" name="name">
+                            <span class="text-danger error-text name_error" ></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="slug">Slug</label>
                             <input id="slug" type="text" class="form-control" name="slug">
+                            <span class="text-danger error-text slug_error" ></span>
                         </div>
 
                         <div class="col-md-12 mb-3">
                             <label for="desc">Description</label>
                             <textarea class="form-control" name="description" id="desc" cols="30" rows="10"></textarea>
+                            <span class="text-danger error-text description_error" ></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="price">Price</label>
                             <input id="price" type="number" class="form-control" name="price">
+                            <span class="text-danger error-text price_error" ></span>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -50,11 +54,13 @@
                                         <option class="form-control" value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
+                                <span class="text-danger error-text category_error" ></span>
                             </div>
                         </div>
 
                         <div class="col-md-12 mb-3">
                             <input type="file" name="image" class="form-control">
+                            <span class="text-danger error-text image_error" ></span>
                         </div>
 
 
@@ -64,8 +70,7 @@
 
                     </div>
                 </form>
-            </div>   
+            </div>
     </div>
-         
-@endsection
 
+@endsection

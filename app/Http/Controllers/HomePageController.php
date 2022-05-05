@@ -26,7 +26,7 @@ class HomePageController extends Controller
     }
 
     public function outlet_map(){
-        $location = Outlet::all();
+        $location = Outlet::all('latitude', 'longitude', 'name');
         return view('frontend/outlet_map', compact('location'));
     }
 

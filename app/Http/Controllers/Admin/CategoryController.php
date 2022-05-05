@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 
 class CategoryController extends Controller
-{   
+{
     // Category index page in the Admin Panel
     public function index(){
         $category = Category::all();
@@ -24,7 +24,7 @@ class CategoryController extends Controller
 
         $request->validate([
             'name'=>'required|max:20|min:1',
-            'slug'=>'required|max:20|min:1',
+            'slug'=>'required|unique:categories,slug|max:20|min:1',
             'description'=>'required|max:200|min:1',
     ]);
 
@@ -43,15 +43,15 @@ class CategoryController extends Controller
         return view('admin/category/edit', compact('category'));
     }
 
-    // Updating the data of the categories table 
+    // Updating the data of the categories table
     public function update(Request $request, $id){
 
         $request->validate([
             'name'=>'required|max:20|min:1',
-            'slug'=>'required|max:20|min:1',
+            'slug'=>'required|unique:categories,slug|max:20|min:1',
             'description'=>'required|max:200|min:1',
     ]);
-    
+
         $category = Category::find($id);
         $category->name = $request->input('name');
         $category->slug = $request->input('slug');

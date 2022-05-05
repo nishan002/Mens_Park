@@ -23,7 +23,7 @@ class OutletController extends Controller
     // Storing the data of outlet in the database with validation
     public function store_outlet(Request $request){
         $outlet = new Outlet();
-        
+
         $request->validate([
             'name'=>'required|max:100|min:1',
             'address'=>'required|max:100|min:1',
@@ -35,7 +35,8 @@ class OutletController extends Controller
             'longitude'=>'required|max:100|min:1',
             'opening_time'=>'required',
             'closing_time'=>'required',
-            'image'=>'required|image|mimes:jpg,png,jpeg'
+            'image'=>'image|mimes:jpg,png,jpeg',
+            'image' => 'max:5120',
     ]);
 
         if($request->hasFile('image')){
@@ -45,7 +46,7 @@ class OutletController extends Controller
             $file->move('assets/uploads/outlets/',$file_name);
             $outlet->image = $file_name;
         }
-        
+
         $outlet->name = $request->input('name');
         $outlet->address = $request->input('address');
         $outlet->phone_number = $request->input('phone_number') ?: '';
@@ -56,7 +57,7 @@ class OutletController extends Controller
         $outlet->longitude = $request->input('longitude') ?: '';
         $outlet->opening_time = $request->input('opening_time') ?: '';
         $outlet->closing_time = $request->input('closing_time') ?: '';
-        
+
         $outlet->save();
         return redirect('outlets')->with('status', 'Outlet Added Successfully');
     }
@@ -67,10 +68,10 @@ class OutletController extends Controller
         return view('admin/outlet/edit', compact('outlet'));
     }
 
-    // Updating the data of the outlets table 
+    // Updating the data of the outlets table
     public function update(Request $request, $id){
         $outlet = Outlet::find($id);
-        
+
         $request->validate([
             'name'=>'required|max:100|min:1',
             'address'=>'required|max:100|min:1',
@@ -82,6 +83,8 @@ class OutletController extends Controller
             'longitude'=>'required|max:100|min:1',
             'opening_time'=>'required',
             'closing_time'=>'required',
+            'image'=>'image|mimes:jpg,png,jpeg',
+            'image' => 'max:5120',
     ]);
 
         if($request->hasFile('image')){
@@ -91,7 +94,7 @@ class OutletController extends Controller
             $file->move('assets/uploads/outlets/',$file_name);
             $outlet->image = $file_name;
         }
-        
+
         $outlet->name = $request->input('name');
         $outlet->address = $request->input('address');
         $outlet->phone_number = $request->input('phone_number') ?: '';
@@ -102,7 +105,7 @@ class OutletController extends Controller
         $outlet->longitude = $request->input('longitude') ?: '';
         $outlet->opening_time = $request->input('opening_time') ?: '';
         $outlet->closing_time = $request->input('closing_time') ?: '';
-        
+
         $outlet->update();
         return redirect('outlets')->with('status', 'Outlet Updated Successfully');
     }
