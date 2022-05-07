@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\File;
+use Validator;
 
 class ProductController extends Controller
 {
@@ -24,33 +25,42 @@ class ProductController extends Controller
 
     // Storing the data of product in the database with validation
     public function store_product(Request $request){
-        $product = new Product();
 
-        $request->validate([
-            'category_id'=>'required|max:20|min:1',
-            'name'=>'required|max:50|min:1',
-            'slug'=>'required|unique:products,slug|max:50|min:1',
-            'price'=>'required|max:30|min:1',
-            'description'=>'required|max:500|min:1',
-            'image'=>'required|image|max:5120|mimes:jpg,png,jpeg',
-    ]);
+      // Validation check for the Product add form
+        $validator = Validator::make($request->all(),[
+          'category_id'=>'required',
+          'name'=>'required|max:50|min:1',
+          'slug'=>'required|unique:products,slug|max:50|min:1',
+          'price'=>'required|max:30|min:1',
+          'description'=>'required|max:500|min:1',
+          'image'=>'required|image|max:5120|mimes:jpg,png,jpeg',
+        ]);
 
-        if($request->hasFile('image')){
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $file_name = time().'.'.$extension;
-            $file->move('assets/uploads/products/',$file_name);
-            $product->image = $file_name;
+        if(!$validator->passes()){
+          return response()->json(['status'=>0, 'error'=> $validator->errors()->toArray()]);
+        }else{
+          $product = new Product();
+
+          // Product imgae file update
+          if($request->hasFile('image')){
+              $file = $request->file('image');
+              $extension = $file->getClientOriginalExtension();
+              $file_name = time().'.'.$extension;
+              $file->move('assets/uploads/products/',$file_name);
+              $product->image = $file_name;
+          }
+
+          // Product data inserting
+          $product->name = $request->input('name');
+          $product->slug = $request->input('slug');
+          $product->description = $request->input('description');
+          $product->price = $request->input('price');
+          $product->category_id = $request->input('category_id');
+
+          $product->save();
+          return response()->json(['status'=>1, 'msg'=>'done']);
         }
 
-        $product->name = $request->input('name');
-        $product->slug = $request->input('slug');
-        $product->description = $request->input('description');
-        $product->price = $request->input('price');
-        $product->category_id = $request->input('category_id');
-
-        $product->save();
-        return redirect('products')->with('status', 'Product Added Successfully');
     }
 
     // Edit page of the product in the admin panel
@@ -62,40 +72,49 @@ class ProductController extends Controller
 
     // Updating the data of the products table
     public function update(Request $request, $id){
-        $product = Product::find($id);
 
-        $request->validate([
-            'category_id'=>'required|max:20|min:1',
-            'name'=>'required|max:50|min:1',
-            'slug'=>'required|unique:products,slug|max:50|min:1',
-            'price'=>'required|max:30|min:1',
-            'description'=>'required|max:500|min:1',
-            'image'=>'image|mimes:jpg,png,jpeg',
-            'image' => 'max:5120',
-    ]);
+        // Validation check for the Product update form
+        $validator = Validator::make($request->all(),[
+          'category_id'=>'required',
+          'name'=>'required|max:50|min:1',
+          'slug'=>'required|max:50|min:1',
+          'price'=>'required|max:30|min:1',
+          'description'=>'required|max:500|min:1',
+          'image'=>'image|max:5120|mimes:jpg,png,jpeg',
+        ]);
 
-        if($request->hasFile('image')){
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $file_name = time().'.'.$extension;
-            $file->move('assets/uploads/products/',$file_name);
-            $product->image = $file_name;
+        if(!$validator->passes()){
+          return response()->json(['status'=>0, 'error'=> $validator->errors()->toArray()]);
+        }else{
+          $product = Product::find($id);
+
+          // Product imgae file update
+          if($request->hasFile('image')){
+              $file = $request->file('image');
+              $extension = $file->getClientOriginalExtension();
+              $file_name = time().'.'.$extension;
+              $file->move('assets/uploads/products/',$file_name);
+              $product->image = $file_name;
+          }
+
+          // Data updating
+          $product->name = $request->input('name');
+          $product->slug = $request->input('slug');
+          $product->description = $request->input('description');
+          $product->price = $request->input('price');
+          $product->category_id = $request->input('category_id');
+
+          $product->update();
+          return response()->json(['status'=>1, 'msg'=>'done']);
         }
 
-        $product->name = $request->input('name');
-        $product->slug = $request->input('slug');
-        $product->description = $request->input('description');
-        $product->price = $request->input('price');
-        $product->category_id = $request->input('category_id');
 
-        $product->update();
-        return redirect('products')->with('status', 'Product Updated Successfully');
     }
 
     // Delete product
     public function destroy($id){
         $product = Product::find($id);
-        $directory = 'assets/uploads/outlets/'.$product->image;
+        $directory = 'assets/uploads/products/'.$product->image;
 
         if(File::exists($directory)){
             File::delete($directory);

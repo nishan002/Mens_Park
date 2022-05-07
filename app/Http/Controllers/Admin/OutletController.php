@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Outlet;
 use Illuminate\Support\Facades\File;
+use Validator;
 
 class OutletController extends Controller
 {
@@ -22,9 +23,9 @@ class OutletController extends Controller
 
     // Storing the data of outlet in the database with validation
     public function store_outlet(Request $request){
-        $outlet = new Outlet();
 
-        $request->validate([
+      // Validation check for the Outlet add form
+        $validator = Validator::make($request->all(),[
             'name'=>'required|max:100|min:1',
             'address'=>'required|max:100|min:1',
             'phone_number'=>'required|max:20|min:1',
@@ -35,31 +36,37 @@ class OutletController extends Controller
             'longitude'=>'required|max:100|min:1',
             'opening_time'=>'required',
             'closing_time'=>'required',
-            'image'=>'image|mimes:jpg,png,jpeg',
-            'image' => 'max:5120',
-    ]);
+            'image'=>'required|image|max:5120|mimes:jpg,png,jpeg',
+        ]);
 
-        if($request->hasFile('image')){
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $file_name = time().'.'.$extension;
-            $file->move('assets/uploads/outlets/',$file_name);
-            $outlet->image = $file_name;
-        }
+        if(!$validator->passes()){
+            return response()->json(['status'=>0, 'error'=> $validator->errors()->toArray()]);
+        }else{
+            $outlet = new Outlet();
 
-        $outlet->name = $request->input('name');
-        $outlet->address = $request->input('address');
-        $outlet->phone_number = $request->input('phone_number') ?: '';
-        $outlet->manager_name = $request->input('manager_name') ?: '';
-        $outlet->description = $request->input('description') ?: '';
-        $outlet->location = $request->input('location') ?: '';
-        $outlet->latitude = $request->input('latitude') ?: '';
-        $outlet->longitude = $request->input('longitude') ?: '';
-        $outlet->opening_time = $request->input('opening_time') ?: '';
-        $outlet->closing_time = $request->input('closing_time') ?: '';
+            // outlet image upload
+            if($request->hasFile('image')){
+                $file = $request->file('image');
+                $extension = $file->getClientOriginalExtension();
+                $file_name = time().'.'.$extension;
+                $file->move('assets/uploads/outlets/',$file_name);
+                $outlet->image = $file_name;
+            }
+            // Outlet data inserting
+            $outlet->name = $request->input('name');
+            $outlet->address = $request->input('address');
+            $outlet->phone_number = $request->input('phone_number') ?: '';
+            $outlet->manager_name = $request->input('manager_name') ?: '';
+            $outlet->description = $request->input('description') ?: '';
+            $outlet->location = $request->input('location') ?: '';
+            $outlet->latitude = $request->input('latitude') ?: '';
+            $outlet->longitude = $request->input('longitude') ?: '';
+            $outlet->opening_time = $request->input('opening_time') ?: '';
+            $outlet->closing_time = $request->input('closing_time') ?: '';
 
-        $outlet->save();
-        return redirect('outlets')->with('status', 'Outlet Added Successfully');
+            $outlet->save();
+            return response()->json(['status'=>1, 'msg'=>'done']);
+          }
     }
 
     // Edit page of the outlet in the admin panel
@@ -70,44 +77,55 @@ class OutletController extends Controller
 
     // Updating the data of the outlets table
     public function update(Request $request, $id){
-        $outlet = Outlet::find($id);
 
-        $request->validate([
+      // Validation check for the Outlet edit form
+        $validator = Validator::make($request->all(),[
             'name'=>'required|max:100|min:1',
             'address'=>'required|max:100|min:1',
-            'phone_number'=>'required|max:100|min:1',
-            'manager_name'=>'required|max:100|min:1',
+            'phone_number'=>'required|max:20|min:1',
+            'manager_name'=>'required|max:50|min:1',
             'description'=>'required|max:500|min:1',
             'location'=>'required|max:100|min:1',
             'latitude'=>'required|max:100|min:1',
             'longitude'=>'required|max:100|min:1',
             'opening_time'=>'required',
             'closing_time'=>'required',
-            'image'=>'image|mimes:jpg,png,jpeg',
-            'image' => 'max:5120',
-    ]);
+            'image'=>'required|image|max:5120|mimes:jpg,png,jpeg',
+        ]);
 
-        if($request->hasFile('image')){
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $file_name = time().'.'.$extension;
-            $file->move('assets/uploads/outlets/',$file_name);
-            $outlet->image = $file_name;
-        }
+        if(!$validator->passes()){
+            return response()->json(['status'=>0, 'error'=> $validator->errors()->toArray()]);
+        }else{
+            $outlet = Outlet::find($id);
 
-        $outlet->name = $request->input('name');
-        $outlet->address = $request->input('address');
-        $outlet->phone_number = $request->input('phone_number') ?: '';
-        $outlet->manager_name = $request->input('manager_name') ?: '';
-        $outlet->description = $request->input('description') ?: '';
-        $outlet->location = $request->input('location') ?: '';
-        $outlet->latitude = $request->input('latitude') ?: '';
-        $outlet->longitude = $request->input('longitude') ?: '';
-        $outlet->opening_time = $request->input('opening_time') ?: '';
-        $outlet->closing_time = $request->input('closing_time') ?: '';
+            // Outlet image update
+            if($request->hasFile('image')){
+                $file = $request->file('image');
+                $extension = $file->getClientOriginalExtension();
+                $file_name = time().'.'.$extension;
+                $file->move('assets/uploads/outlets/',$file_name);
+                $outlet->image = $file_name;
+            }
 
-        $outlet->update();
-        return redirect('outlets')->with('status', 'Outlet Updated Successfully');
+            // Outlet data update
+            $outlet->name = $request->input('name');
+            $outlet->address = $request->input('address');
+            $outlet->phone_number = $request->input('phone_number') ?: '';
+            $outlet->manager_name = $request->input('manager_name') ?: '';
+            $outlet->description = $request->input('description') ?: '';
+            $outlet->location = $request->input('location') ?: '';
+            $outlet->latitude = $request->input('latitude') ?: '';
+            $outlet->longitude = $request->input('longitude') ?: '';
+            $outlet->opening_time = $request->input('opening_time') ?: '';
+            $outlet->closing_time = $request->input('closing_time') ?: '';
+
+            $outlet->update();
+            return response()->json(['status'=>1, 'msg'=>'done']);
+          }
+
+
+
+
     }
 
     // Delete outlet

@@ -35,9 +35,9 @@ Route::middleware(['auth'])->group(function(){
 // Route for the Categories
     Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('categories');
     Route::get('/add_category', [App\Http\Controllers\Admin\CategoryController::class, 'add_category'])->name('add_category');
-    Route::post('/store_category', [App\Http\Controllers\Admin\CategoryController::class, 'store_category'])->name('store_category');
+    Route::post('/store_category', [App\Http\Controllers\Admin\CategoryController::class, 'store_category'])->name('category.store_category');
     Route::get('/edit_category/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('edit');
-    Route::post('/update_category/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('update');  
+    Route::post('/update_category/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('update');
     Route::get('/delete_category/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('destroy');
     Route::get('/category_search', [App\Http\Controllers\Admin\CategoryController::class, 'category_search'])->name('category_search');
 

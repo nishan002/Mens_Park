@@ -53,12 +53,13 @@
 
 
     <!-- Scripts -->
+
     <script src="{{ asset('frontend/js/bootstrap.bundle.min.js') }}" defer></script>
     <script src="{{ asset('admin/js/main.js') }}" type="text/javascript"></script>
     <script src="{{ asset('admin/js/bootstrap.bundle.min.js') }}" type="text/javascript"></script>
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+    @yield('script')
     <?php if(session('status')) { ?>
       <script>
         swal( "{{ session('status') }}" );

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
-
+use Validator;
 class CategoryController extends Controller
 {
     // Category index page in the Admin Panel
@@ -22,19 +22,27 @@ class CategoryController extends Controller
     // Storing the data of category in the database with validation
     public function store_category(Request $request){
 
-        $request->validate([
+          $validator = Validator::make($request->all(),[
             'name'=>'required|max:20|min:1',
             'slug'=>'required|unique:categories,slug|max:20|min:1',
             'description'=>'required|max:200|min:1',
-    ]);
+          ]);
 
-        $category = new Category();
-        $category->name = $request->input('name');
-        $category->slug = $request->input('slug');
-        $category->description = $request->input('description');
-        $category->status = $request->input('status') == True? '1' : '0';
-        $category->save();
-        return redirect('categories')->with('status', 'Category Added Successfully');
+          if(!$validator->passes()){
+            return response()->json(['status'=>0, 'error'=> $validator->errors()->toArray()]);
+          }else{
+            $category = new Category();
+            $category->name = $request->input('name');
+            $category->slug = $request->input('slug');
+            $category->description = $request->input('description');
+            $category->status = $request->input('status') == True? '1' : '0';
+            $category->save();
+          
+            return response()->json(['status'=>1, 'msg'=>'done']);
+
+          }
+
+
     }
 
     // Edit page of the category in the admin panel
@@ -46,19 +54,24 @@ class CategoryController extends Controller
     // Updating the data of the categories table
     public function update(Request $request, $id){
 
-        $request->validate([
-            'name'=>'required|max:20|min:1',
-            'slug'=>'required|unique:categories,slug|max:20|min:1',
-            'description'=>'required|max:200|min:1',
-    ]);
+      $validator = Validator::make($request->all(),[
+        'name'=>'required|max:20|min:1',
+        'slug'=>'required|max:20|min:1',
+        'description'=>'required|max:200|min:1',
+      ]);
 
+      if(!$validator->passes()){
+        return response()->json(['status'=>0, 'error'=> $validator->errors()->toArray()]);
+      }else{
         $category = Category::find($id);
         $category->name = $request->input('name');
         $category->slug = $request->input('slug');
         $category->description = $request->input('description');
         $category->status = $request->input('status') == True? '1' : '0';
         $category->update();
-        return redirect('categories')->with('status', 'Category Updated Successfully');
+        return response()->json(['status'=>1, 'msg'=>'done']);
+
+      }
     }
 
     // Delete category
