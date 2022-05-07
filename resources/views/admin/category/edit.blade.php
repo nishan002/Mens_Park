@@ -73,6 +73,7 @@
                     $('span.'+prefix+'_error').text(val[0]);
                   });
                 }else{
+                  $('html, body').animate({ scrollTop: 0 }, 0);
                   $("#success-alert").fadeIn(800);
                   setTimeout(function(){
                      $("#success-alert").fadeOut();
